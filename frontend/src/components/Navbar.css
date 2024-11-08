@@ -1,0 +1,31 @@
+.navbar {
+    background-color: #333;
+    padding: 1rem;
+  }
+  
+  .navbar-list {
+    list-style: none;
+    display: flex;
+    justify-content: space-around;
+  }
+  
+  .navbar-list li {
+    margin: 0 15px;
+  }
+  
+  .nav-link {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+  }
+  
+  .nav-link:hover {
+    text-decoration: underline;
+  }
+  
+  /* Aggiungi la classe attiva per evidenziare il link selezionato */
+  .nav-link.active {
+    color: #ffcc00; /* Colore evidenziato per il link attivo */
+    font-weight: bold;
+  }
+  
