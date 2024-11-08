@@ -26,7 +26,7 @@ export  const Login = () => {
                 );
 
                 if (res.status === 200) {
-                    localStorage.setItem('_id', res.data._id);
+                    localStorage.setItem('_id', res.data.id);
                     localStorage.setItem('email', res.data.email);
                     setEmail('');
                     setPassword('');
