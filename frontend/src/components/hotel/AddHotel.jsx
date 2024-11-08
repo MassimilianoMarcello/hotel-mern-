@@ -41,6 +41,7 @@ export const AddHotel = () => {
         <div className="add-hotel">
             <form onSubmit={submitForm}>
                 <label htmlFor="name">Hotel Name</label>
+                
                 <input
                     type="text"
                     id="name"
