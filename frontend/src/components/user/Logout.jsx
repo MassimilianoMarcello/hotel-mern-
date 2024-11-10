@@ -14,8 +14,8 @@ export const Logout = () => {
                 await axios.post('http://localhost:5002/api/logout', {}, { withCredentials: true });
                 
                 // Rimuovi i dati dal localStorage
-                localStorage.removeItem('_id');
-                localStorage.removeItem('email');
+                sessionStorage.removeItem('_id');
+                sessionStorage.removeItem('email');
                 
                 // Reindirizza alla pagina di login
                 navigate('/login');

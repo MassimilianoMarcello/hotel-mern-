@@ -41,7 +41,7 @@ export const Hotels = () => {
       {hotel.length > 0 ? (
         <ul>
           {hotel.map((item) => (
-            <li key={item._id}>  <Hotel hotel={item} /> </li>
+            <li key={item._id}>  <Hotel hotel={item}  /> </li>
           ))}
         </ul>
       ) : (

@@ -1,10 +1,11 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import './AddHotel.css';
+import './UpdateHotel.css';
 
-export const AddHotel = () => {
+export const UpdateHotel = () => {
     const navigate = useNavigate();
+    const { id } = useParams(); // Otteniamo l'ID dell'hotel dai parametri dell'URL
 
     const [name, setName] = useState('');
     const [category, setCategory] = useState('');
@@ -13,25 +14,44 @@ export const AddHotel = () => {
     const [price, setPrice] = useState(0);
     const [error, setError] = useState('');
 
+    // Effettua una chiamata per ottenere i dati dell'hotel esistente
+    useEffect(() => {
+        const fetchHotel = async () => {
+            try {
+                const res = await axios.get(`http://localhost:5002/api/hotels/${id}`);
+                const hotel = res.data;
+                setName(hotel.name);
+                setCategory(hotel.category);
+                setDescription(hotel.description);
+                setImage(hotel.image);
+                setPrice(hotel.price || 0) ;
+            // eslint-disable-next-line no-unused-vars
+            } catch (err) {
+                setError('Failed to fetch hotel data.');
+            }
+        };
+
+        fetchHotel();
+    }, [id]);
+
+    // Funzione per inviare i dati aggiornati
     const submitForm = async (e) => {
         e.preventDefault();
 
-        const user_id = sessionStorage.getItem('_id'); 
-
-        if (name && category && description && image && user_id && typeof price === 'number') {
+        if (name && category && description && image && price) {
             try {
-                const res = await axios.post(
-                    'http://localhost:5002/api/hotels-create',
-                    { name, category, description, image,price, user_id }, 
+                const res = await axios.put(
+                    `http://localhost:5002/api/hotels/${id}`,
+                    { name, category, description, image, price },
                     { withCredentials: true }
                 );
 
-                if (res.status === 201) {
+                if (res.status === 200) {
                     navigate('/hotels');
                 }
             // eslint-disable-next-line no-unused-vars
             } catch (err) {
-                setError('Failed to add hotel. Please try again later.');
+                setError('Failed to update hotel. Please try again later.');
             }
         } else {
             setError('Please fill in all fields');
@@ -39,17 +59,17 @@ export const AddHotel = () => {
     };
 
     return (
-        <div className="add-hotel">
+        <div className="update-hotel">
+            <h2>Update Hotel</h2>
             <form onSubmit={submitForm}>
                 <label htmlFor="name">Hotel Name</label>
-
                 <input
                     type="text"
                     id="name"
                     name="name"
-                    required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
+                    required
                 />
 
                 <label htmlFor="category">Category</label>
@@ -57,27 +77,28 @@ export const AddHotel = () => {
                     type="text"
                     id="category"
                     name="category"
-                    required
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
+                    required
                 />
-                          <label htmlFor="category">Price</label>
+
+                <label htmlFor="price">Price</label>
                 <input
                     type="number"
                     id="price"
                     name="price"
-                    required
                     value={price}
                     onChange={(e) => setPrice(Number(e.target.value))}
+                    required
                 />
 
                 <label htmlFor="description">Description</label>
                 <textarea
                     id="description"
                     name="description"
-                    required
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
+                    required
                 />
 
                 <label htmlFor="image">Image URL</label>
@@ -85,24 +106,14 @@ export const AddHotel = () => {
                     type="text"
                     id="image"
                     name="image"
-                    required
                     value={image}
                     onChange={(e) => setImage(e.target.value)}
+                    required
                 />
 
                 {error && <div className="error">{error}</div>}
-                <button type="submit">Add Hotel</button>
+                <button type="submit">Update Hotel</button>
             </form>
         </div>
     );
 };
-
-
-
-
-
-
-
-
-
-

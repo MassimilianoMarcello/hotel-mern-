@@ -21,6 +21,19 @@ const HotelControllers = {
             res.status(500).json({ message: err.message });
         }
     },
+     getUserHotels : async (req, res) => {
+        try {
+            const userId = req.user._id;  // Ottieni l'ID dell'utente dal middleware
+            console.log("User ID:", userId);  // Log per vedere l'ID utente ricevuto
+            const hotels = await Hotel.find({ user_id: userId });  // Trova gli hotel dell'utente
+            console.log("Hotels found:", hotels);  // Log per vedere gli hotel trovati
+            res.status(200).json(hotels);
+        } catch (err) {
+            console.error("Error:", err);  // Log dell'errore
+            res.status(500).json({ message: err.message });
+        }
+    },
+    
     createHotel: async (req, res) => {
         const { name, description, category, image, price, user_id } = req.body;
         try {

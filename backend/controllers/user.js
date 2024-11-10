@@ -77,7 +77,7 @@ const userControllers = {
                     res.status(200).json({
                         id: userExist._id,
                         email:userExist.email,
-                        message: 'Userr logged in succesufully'
+                        message: 'Userr logged in successfully'
                     });
                 } else {
                     return res
