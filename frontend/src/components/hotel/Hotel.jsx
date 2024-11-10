@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import axios from 'axios';
+
 import './Hotel.css';
 
 const Hotel = ({ hotel }) => {
@@ -8,29 +8,9 @@ const Hotel = ({ hotel }) => {
         return null;
     }
 
-    // Funzione per gestire l'aggiornamento dell'hotel
-    const handleUpdate = () => {
-        // Naviga alla pagina di aggiornamento con l'ID dell'hotel
-        window.location.href = `/hotels/update/${hotel._id}`;
-    };
 
-    // Funzione per gestire l'eliminazione dell'hotel
-    const handleDelete = async () => {
-        if (window.confirm('Are you sure you want to delete this hotel?')) {
-            try {
-                // Chiamata DELETE al server per eliminare l'hotel
-                await axios.delete(`http://localhost:5002/api/hotels/${hotel._id}`, {
-                    withCredentials: true,
-                });
-                alert('Hotel deleted successfully');
-                // Ricarica la pagina o aggiorna la lista degli hotel
-                window.location.reload();
-            } catch (error) {
-                alert('Failed to delete hotel');
-                console.error('Error deleting hotel:', error);
-            }
-        }
-    };
+
+
 
     return (
         <div className="hotel-card">
@@ -50,10 +30,7 @@ const Hotel = ({ hotel }) => {
             <p>{hotel.category || 'Unknown Category'}</p>
             <p>{hotel.description || 'No description available'}</p>
 
-            {/* Pulsante per richiedere aggiornamento hotel */}
-            <button onClick={handleUpdate}>Update</button>
-            {/* Pulsante per eliminare hotel */}
-            <button onClick={handleDelete}>Delete</button>
+       
         </div>
     );
 };

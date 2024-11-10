@@ -1,11 +1,35 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import  './UserHotel.css';
+import './UserHotel.css';
 
 const UserHotels = () => {
     const [hotels, setHotels] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+
+    // Funzione per gestire l'aggiornamento dell'hotel
+    const handleUpdate = (hotelId) => {
+        // Naviga alla pagina di aggiornamento con l'ID dell'hotel
+        window.location.href = `/hotels/update/${hotelId}`;
+    };
+
+    // Funzione per gestire l'eliminazione dell'hotel
+    const handleDelete = async (hotelId) => {
+        if (window.confirm('Are you sure you want to delete this hotel?')) {
+            try {
+                // Chiamata DELETE al server per eliminare l'hotel
+                await axios.delete(`http://localhost:5002/api/hotels/${hotelId}`, {
+                    withCredentials: true,
+                });
+                alert('Hotel deleted successfully');
+                // Ricarica la pagina o aggiorna la lista degli hotel
+                window.location.reload();
+            } catch (error) {
+                alert('Failed to delete hotel');
+                console.error('Error deleting hotel:', error);
+            }
+        }
+    };
 
     // Funzione per ottenere gli hotel dell'utente loggato
     const fetchUserHotels = async () => {
@@ -48,6 +72,10 @@ const UserHotels = () => {
                             <p>Category: {hotel.category}</p>
                             <p>Price: ${hotel.price}</p>
                             <img src={hotel.image} alt={hotel.name} style={{ width: '200px' }} />
+                            {/* Pulsante per richiedere aggiornamento hotel */}
+                            <button onClick={() => handleUpdate(hotel._id)}>Update</button>
+                            {/* Pulsante per eliminare hotel */}
+                            <button onClick={() => handleDelete(hotel._id)}>Delete</button>
                         </li>
                     ))}
                 </ul>
@@ -57,3 +85,4 @@ const UserHotels = () => {
 };
 
 export default UserHotels;
+
